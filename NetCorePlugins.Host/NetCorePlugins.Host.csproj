@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCorePlugins.Plugin1\NetCorePlugins.Plugin1.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\NetCorePlugins.Plugin2\NetCorePlugins.Plugin2.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\NetCorePlugins.Shared\NetCorePlugins.Shared.csproj" />
+  </ItemGroup>
+
+  <Target Name="QTR_AfterBuild" AfterTargets="Build">
+    <ItemGroup>
+      <QIG_NetCorePluginsPlugin1Files Include="..\NetCorePlugins.Plugin1\bin\$(Configuration)\net5.0\**\*.*" />
+      <QIG_NetCorePluginsPlugin2Files Include="..\NetCorePlugins.Plugin2\bin\$(Configuration)\net5.0\**\*.*" />
+    </ItemGroup>
+    <RemoveDir Directories="$(TargetDir)\Plugins" />
+    <MakeDir Directories="$(TargetDir)\Plugins" />
+    <MakeDir Directories="$(TargetDir)\Plugins\Plugin1" />
+    <MakeDir Directories="$(TargetDir)\Plugins\Plugin2" />
+    <Copy SourceFiles="@(QIG_NetCorePluginsPlugin1Files)" DestinationFolder="$(TargetDir)\Plugins\Plugin1\%(RecursiveDir)" />
+    <Copy SourceFiles="@(QIG_NetCorePluginsPlugin2Files)" DestinationFolder="$(TargetDir)\Plugins\Plugin2\%(RecursiveDir)" />
+  </Target>
+
+</Project>
