@@ -9,6 +9,7 @@ namespace NetCorePlugins.Plugin1
 
         public void Dispose()
         {
+
         }
 
         public void Initialize()
